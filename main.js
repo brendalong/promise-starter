@@ -1,18 +1,33 @@
 "use strict"
 
+//simple example with delay - wait for it
+let greetingPromise = () => {
+    new Promise((resolve, reject) =>{
+        // mockup async/delayed action using setTimeout
+        setTimeout( () => { 
+            resolve("World"); 
+        }, 3000);
+    })
+    .then((resolve) => {
+        console.log(resolve);
+    });
+};
+
+greetingPromise();
+console.log("Hello");
 
 
-let showItems = function(legosData){
+let showItems = (legosData) => {
 	// console.log("showItems", legosData);
 	let legoDisplay = document.getElementById("lego-display");
 
-	legosData.forEach(function(lego){
+	legosData.forEach( (lego) => {
 		let legoBlock = buildLego(lego);
 		legoDisplay.innerHTML += legoBlock;
 	});
 }
 
-let buildLego = function(lego){
+let buildLego = (lego) => {
 	//building a string to create the visual display
 
 	let block = "",
@@ -35,15 +50,18 @@ let buildLego = function(lego){
 
 /////////////// version 1 /////////////////////////////////
 
-let colorPromise = Legos.loadLegos();
-console.log(colorPromise);  //what does the promise look like now or inside the then - object
-colorPromise.then(
-	function (resolve) {
-		let newItem = {LegoName: "Brenda's Pick", ColorHex: "#333", YearFrom:"2009", YearTo:"Present"};
+let colorPromise = Legos.loadLegos()
+// colorPromise holds the response of the promise
+// Once a promise is fulfilled or rejected, it is immutable (i.e. it can never change again). 
+// With a stored value that will forever hold the state of the resolved Promise - use .then()
+// then() is method on a promise that listens for resolve or reject.
+.then(
+	 (resolve) => {
+		let newItem = {LegoName: "Brenda's Pick", ColorHex: "a3a3d1", YearFrom:"2009", YearTo:"Present"};
 		resolve.push(newItem);
 		showItems(resolve);
 	},
-	function (reject) {
+	(reject) => {
 		console.error("OOPs", reject);
 		backupPlan();
 	});
@@ -51,7 +69,7 @@ colorPromise.then(
 
 
 /////////////////// Alternative code for reject ///////////////////////////
-let backupPlan = function (){
+let backupPlan = () => {
 	console.log("The data did not load, so we'll need to subtitute some other code here.")
 };
 
@@ -72,20 +90,78 @@ let backupPlan = function (){
 ///////////////// version 2 with additional .then ////////////////////////
 
 // let colorPromise = Legos.loadLegos()
-// colorPromise.then(
-// 	function (resolve) {
+// .then(
+// 	(resolve) => {
 // 		let newItem = {LegoName: "Brenda's Pick", ColorHex: "#333", YearFrom:"2009", YearTo:"Present"};
 // 		resolve.push(newItem); //automatically sends the resolve to the next then
+// 		return resolve;
 // 	},
-// 	function (reject) {
+// 	(reject) => {
 // 		console.error("OOPs", reject);
 // 		backupPlan();
-// 	});
-// colorPromise.then( 
-// 	function(resolve){
+// 	}).then( //chaining then together, add more functionality
+// 	(resolve) => {
 // 		 console.log("One for the road", resolve);
 // 	},
-// 	function() {  // default to catch anything else
+// 	() => {  // default to catch anything else
 //         console.log("there was an error somewhere");
-//     });
+//  });
+
+
+
+
+
+
+/////////////// version 3 with promise all ///////////////////////////////
+
+
+// FROM MDN
+///////////////// promise all ////////////////////
+// if any rejected, catch fires
+
+// var p1 = Promise.resolve(3);
+// var p2 = 1337;
+// var p3 = new Promise((resolve, reject) => {
+//   setTimeout(resolve, 1000, 'foo');
+// }); 
+
+// Promise.all([p1, p2, p3]).then( (values) => { 
+//   console.log("resolve values:", values); // [3, 1337, "foo"] 
+// });
+
+
+
+///////////////// promise race ////////////////////
+// triggers as soon as any promise is returned
+// setTimeout(function, milliseconds, param1, param2, ...)
+
+// var p1 = new Promise((resolve, reject) => { 
+//   	setTimeout(resolve, 1000, 'one'); 
+// }); 
+// var p2 = new Promise((resolve, reject) => { 
+//   	setTimeout(resolve, 2000, 'two'); 
+// });
+// var p3 = new Promise((resolve, reject) => {
+//   	setTimeout(resolve, 3000, 'three');
+// });
+// var p4 = new Promise((resolve, reject) => {
+//   	setTimeout(resolve, 400, 'four');
+// });
+// var p5 = new Promise((resolve, reject) => {
+// 	setTimeout(resolve, 1000, 'five');
+//  	// try both ways
+//   	// reject('reject');
+// });
+
+// Promise.race([p1, p2, p3, p4, p5])
+// .then( (winner) => { 
+// 	console.log("race winner:", winner);
+// }, 
+// reason => {
+// 	console.log(reason)
+// });
+
+
+
+
 

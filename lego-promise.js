@@ -5,7 +5,7 @@ var Legos = (function(originalLegos){
 	let legoItems = [];
 
 	let parseData = function(data){
-		data.LegoColorss.forEach(function(element){
+		data.LegoColorss.forEach( (element) =>{
       		legoItems.push(element)
     	});
 	}
@@ -13,17 +13,17 @@ var Legos = (function(originalLegos){
 
 	////////////////// properties of the Lego Object /////////////////////
 
-	originalLegos.getLegoItems = function(){
+	originalLegos.getLegoItems = () => {
 		return legoItems;
 	}
 
-	originalLegos.loadLegos = function () {
-      return new Promise(function (resolve, reject) {  // return the promise object to the caller
+	originalLegos.loadLegos =  () => {
+      return new Promise( (resolve, reject) => {  // return the promise object to the caller
         let request = new XMLHttpRequest(); //regular XHR request
         request.onload = function () {
-          if (request.status === 200) { // check the status. This is called even on 404 etc.
+          if (request.status === 200) { // check the status. This is called even on 404 etc. https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
             // Success
-            var data = JSON.parse(request.responseText);
+            var data = JSON.parse(request.responseText); //Returns the response data as a string
             parseData(data); // modify the data into array
             resolve(legoItems); //the resolve contains the data -- returned to the caller
 		    // resolve(request.response); // default
