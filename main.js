@@ -92,7 +92,7 @@ let backupPlan = () => {
 // let colorPromise = Legos.loadLegos()
 // .then(
 // 	(resolve) => {
-// 		let newItem = {LegoName: "Brenda's Pick", ColorHex: "#333", YearFrom:"2009", YearTo:"Present"};
+// 		let newItem = {LegoName: "Brenda's Pick", ColorHex: "a3a3d1", YearFrom:"2009", YearTo:"Present"};
 // 		resolve.push(newItem); //automatically sends the resolve to the next then
 // 		return resolve;
 // 	},
